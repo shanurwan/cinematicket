@@ -1,32 +1,396 @@
-# Prerequisites
-*.d
+#include<cstring> //output file
+#include<iostream>//input output + output file
+#include<iomanip> //setprecision
+#include<cstdlib> //"continue",system("CLS"),srand
+#include<string.h> //string,getline,cin.ignore
+#include <stdio.h> //change color system("color 80");
+#include <stdlib.h> //change color
+#include<fstream>// output file
+#include <conio.h> //getch()
+#include<ctime> //time in srand
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+using namespace std;
+void chooseSeat();
+int count_seat();
+void PromoteRegistration();
+void displayWelcome();
+int RegistrationMember();
+//void memberID();
+char chooseMovie(char);
+int chooseTime(int);
+double chooseCondiment ();
+int Printreceipt(int a, int b,int c,string d,double f);
+double totalPrice(int a,int c,double b);
+double payment(double a);
+double checkAge(double a,int c, int h);
+int PrintableReceipt(int a, int b,int c,string d,double f);
+char seats[5][8];
+int row[40],col[40],i,j;
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+int main()
+ {  double totalTicket,totalcondi,totalPay,movie,time,phone_number,discount,member; char a,b; 
+    int stu,chi,elem,elen;
+     string name; 
+    
+    
+    system("color 80");
+    PromoteRegistration();
+    cin>>b;
+    system("CLS");
+    if ((b=='r')||(b=='R'))
+    { RegistrationMember();
+      //memberID();
+	}
+	else { "continue";
+	}
+    system("CLS");
+    displayWelcome();
+    cin>>a;
+    system("CLS");
+    next:
+    chooseMovie(a);
+    cin>>movie;
+    system("CLS");
+	chooseTime(movie);
+	cin>>time;
+	system("CLS");
+ 
+     for (int i=0; i<5; i++)
+        for (int j=0; j<8; j++)
+            seats[i][j] = 'O';
+     bool choice = 1;
+while (choice==true)
+    {
+     chooseSeat();
+     system("CLS");
+     cout<< "\n\n\t\t\t\tWould like to choose another seat?(Please choose only 1 or 0)" <<endl;
+     cout<< "\n\n\t\t\t\t(1) Yes"<<endl;
+     cout<< "\n\n\t\t\t\t(0) No" <<endl;
+     cin>>choice;
+     system("CLS");
+    totalTicket=count_seat();
+     if (choice==0)
+        break;
+    }
+    system("CLS");
+    totalcondi=chooseCondiment();
+    system("CLS");
+    cout<<"\n\n\t\t\t\tGood news!! We offer 10% off for students and 50% off for children"<<endl;
+    cout<<"\n\n\t\t\t\tOut of "<<totalTicket<<" "<<"How many are students?";cin>>stu;
+    cout<<"\n\n\t\t\t\tOut of "<<totalTicket<<" "<<"How many are children?";cin>>chi;
+    system("CLS");
+    discount=checkAge(movie,stu,chi);
+    totalPay=totalPrice(movie,totalTicket,totalcondi)-discount;
+    
+	payment(totalPay);
+	system("CLS");
+     cout<<"\n\n\t\t\t\tPlease fill in your information below for receipt purpose "<<endl;
+     cout<<"\n\n\t\t\t\tPlease insert your first name: ";
+     cin.ignore();  getline(cin,name);
+     cout<<"\n\n\t\t\t\tPlease insert your membership ID(enter 0 if unavailable): ";
+     cin>>member;
+     cout<<"\n\n\t\t\t\tPlease insert your phone number: ";
+     cin>>phone_number;
+     system("CLS");
+     Printreceipt(movie, time,phone_number,name,totalPay);
+     system("CLS");
+     PrintableReceipt(movie, time,phone_number,name,totalPay);
+     
+   getch();
+   return 0;
+ }
 
-# Fortran module files
-*.mod
-*.smod
+void chooseSeat()
+{    
+        cout<<"\n\n\t\t\t\tYou may choose your seat from the choices below"<<'\n';
+    int i,j;
+    for ( i=0;i<5; i++)
+         cout<<"\n\n\t\t\t\t|_ row n "<<i+1<<" _"<<seats[i][0]<<"_|"<<"_"<<seats[i][1]<<"_|"<<"_"<<seats[i][2]<<"_|"<<"_"<<seats[i][3]<<"_|"<<"_"<<seats[i][4]<<"_|"<<"_"<<seats[i][5]<<"_|"<<"_"<<seats[i][6]<<"_|"<<"_"<<seats[i][7]<<"_|"<<'\n';
+        cout<<"\n\n\t\t\t\tKey in your seat of choice: ( row and column ) :  ";
+        cin>>row[i]>>row[j];
+       
+        if (seats[i][j] != '1')
+            seats[i][j] = '1';
+        else
+            {
+                cout<<endl;
+                cout<<"\n\n\t\t\t\tThis seat is taken! Please try another one."<<endl;
+                cout<<endl;
+            }
+    for ( i=0;i<5; i++)
+        cout<<"\n\n\t\t\t\t|_ row n "<<i+1<<" _"<<seats[i][0]<<"_|"<<"_"<<seats[i][1]<<"_|"<<"_"<<seats[i][2]<<"_|"<<"_"<<seats[i][3]<<"_|"<<"_"<<seats[i][4]<<"_|"<<"_"<<seats[i][5]<<"_|"<<"_"<<seats[i][6]<<"_|"<<"_"<<seats[i][7]<<"_|"<<'\n';
+   
+   ;
+}
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+
+int count_seat()
+{ static int num=0;
+  cout<<"\n\n\t\t\t\tThe number of ticket is:  "<<num+1<<endl;
+  num++;
+  return num;
+}
+
+void displayWelcome()
+{ 	
+   
+    
+	cout << "\n\n\t\t\t\t\t-------------------------------------" << endl;
+	cout << "\n\n\t\t\t\t\t\tWELCOME TO WANWAN CINEMA" << endl;
+	cout << "\n\n\t\t\t\t\t-------------------------------------" << endl;
+	
+	cout << "\n\n\t\t\t\t\tWe have discount for students and kids!!" << endl;
+	
+	cout << "\n\n\t\t\t\t\tEnter N to see movie timing/n";
+	
+	
+}
+
+char chooseMovie(char k)
+{ 	
+           if ((k=='N')||(k=='n') )
+           {
+			cout<<"\n\n\t\t\t\t Movies :";
+			cout<<"\n\t\t\t\t 1. TOP GUN MAVERICK (PG13) - Hall A1";
+			cout<<"\n\t\t\t\t\t  Price: RM26.50";
+			cout<<"\n\t\t\t\t\t  Action,Thriller";
+			cout<<"\n\t\t\t\t 2. KKN DI DESA PENARI (PG18) - Hall A2";
+			cout<<"\n\t\t\t\t\t  Price: RM13.35";
+			cout<<"\n\t\t\t\t\t  Mystery, Horror";
+			cout<<"\n\t\t\t\t 3. DOCTOR STRANGE (PG13) - Hall A3";
+			cout<<"\n\t\t\t\t\t  Price: RM12.74";
+			cout<<"\n\t\t\t\t\t  Action, Fantasy";
+			cout<<"\n\t\t\t\t 4. SONIC THE HEDGEDOG 2 (PG13) - Hall A4";
+			cout<<"\n\t\t\t\t\t  Price: RM27.40";
+			cout<<"\n\t\t\t\t\t  Animation, Action, Adventure";
+			cout<<"\n\t\t\t\t 5. THE ASSISTANT (PG13) - Hall A4";
+			cout<<"\n\t\t\t\t\t  Price: RM31.20";
+			cout<<"\n\t\t\t\t\t  Action, Thriller\n";
+			
+			cout<<"\n\t\t\t\tEnter Your Choice :"<<"\t";}
+			
+			else {"continue";}
+			
+		return k;			
+}
+
+int chooseTime(int c)
+{ 	                
+        if ((c>=1)||(c<=5))
+        {
+                    cout<<"\n\n\t\t\t\t-------------------------------------------";
+					cout<<"\n\n\t\t\t\t The Timings for the selected show are:";
+					cout<<"\n\n\t\t\t\t Select the the timings: ";
+					cout<<"\n\t\t\t\t 1. 0900 - 1100";
+					cout<<"\n\t\t\t\t 2. 1130 - 1330";
+					cout<<"\n\t\t\t\t 3. 1400 - 1600";
+					cout<<"\n\t\t\t\t 4. 1700 - 1900";
+					cout<<"\n\t\t\t\t 5. 2000 - 2200\n";	
+									
+					cout<<"\n\n\t\t\t\t Please select the timings: ";}
+		else{ "continue";}
+		
+		return c;
+}
+
+double chooseCondiment ()
+{ char want; double setA,setB,setC,total;
+                    cout<<"\n\n\t\t\t\tWould you like to buy snacks and drinks?(Enter Y for yes and any key for no)";
+                    cin>>want;
+                    if ((want=='Y')||(want=='y'))
+                    { 	
+					cout<<"\n\t\t\t\t __________________________________________";
+				    cout<<"\n\t\t\t\t|    SET A    |    SET B    |    SET C    |";
+			     	cout<<"\n\t\t\t\t|-----------------------------------------|";
+			    	cout<<"\n\t\t\t\t|   POPCORN   |   NACHOS    |   POPCORN   |";
+			    	cout<<"\n\t\t\t\t|  COCA-COLA  |  COCA-COLA  |   NACHOS    |";
+			    	cout<<"\n\t\t\t\t|             |             |  COCA-COLA  |";
+			    	cout<<"\n\t\t\t\t|             |             |             |";
+			    	cout<<"\n\t\t\t\t|  RM 15.59   |    RM 13.79 |    RM 23.90 |";
+			    	cout<<"\n\t\t\t\t|_________________________________________|";
+			    	cout<<"\n\t\t\t\tTotal SET A: ";cin>>setA;
+			    	cout<<"\n\t\t\t\tTotal SET B: ";cin>>setB;
+			    	cout<<"\n\t\t\t\tTotal SET C: ";cin>>setC;
+			    	total=setA*15.59+setB*13.79+setC*23.90;
+					}
+					else{ total=0;}
+	return total;
+}
+
+int Printreceipt(int a, int b,int c,string d,double f)
+{ 
+ cout<<"\n\t\t\t\t HERE IS YOUR RECEIPT";
+switch (a)
+{ case 1: cout<<"\n\n\t\t\t\tTOP GUN MAVERICK (PG13) - Hall A1"<<endl;break;
+  case 2: cout<<"\n\n\t\t\t\tKKN DI DESA PENARI (PG18) - Hall A2"<<endl;break;
+  case 3: cout<<"\n\n\t\t\t\tDOCTOR STRANGE (PG13) - Hall A3"<<endl;break;
+  case 4: cout<<"\n\n\t\t\t\tSONIC THE HEDGEDOG 2 (PG13) - Hall A4"<<endl;break;
+  case 5: cout<<"\n\n\t\t\t\tTHE ASSISTANT (PG13) - Hall A4"<<endl;break;
+  default: break;
+}
+ switch (b)
+{ case 1: cout<<"\n\n\t\t\t\t0900 - 1100"<<endl;break;
+  case 2: cout<<"\n\n\t\t\t\t1130 - 1330"<<endl;break;
+  case 3: cout<<"\n\n\t\t\t\t1400 - 1600"<<endl;break;
+  case 4: cout<<"\n\n\t\t\t\t1700 - 1900"<<endl;break;
+  case 5: cout<<"\n\n\t\t\t\t2000 - 2200"<<endl;break;
+  default: break;
+}
+          
+		  cout<<"\n\n\t\t\t\tCustomer: "<<d;
+          cout<<"\n\n\t\t\t\tContact no:  "<<c;
+          cout<<"\n\n\t\t\t\tTotal payment: "<<f<<fixed<<setprecision(2);
+          cout<<"\n\n\t\t\t\tStatus: PAID";
+          cout<<"\n\n\t\t\t\tYour Seat No: "<<row[i]<<row[j]<<" ";
+          
+          
+  return 0;
+}
+
+double payment(double a)
+{ 	int paid,balance,pay,m,y,pin; double card;
+        cout<<"\n\t\t\t\tYour total payment is: "<<a;
+        cout<<"\n\t\t\t\tWould you like to pay with cash or card?(Enter 1 for Cash and 2 for Card)";cin>>pay;
+        if(pay==1)
+        { cout<<"\n\t\t\t\tCash paid: RM ";
+		  cin >> paid;
+		}
+		else if(pay==2)
+		{ cout<<"\n\t\t\t\tPlease enter your 16 digit card number(without space)\n"; cin>>card;
+		  cout<<"\n\t\t\t\tPlease enter the expiry date\n";
+		  cout<<"\n\t\t\t\tMM: ";cin>>m; cout<<"\n\t\t\t\tYY: ";cin>>y;
+		  cout<<"\n\t\t\t\tEnter the 3 digit pin: "; cin>>pin;
+		  cout<<"\n\t\t\t\tAmount paid: RM ";cin>>paid;  
+		}
+		balance = paid - a;
+		if (balance >= 0)
+			{
+				cout<<"\n\t\t\t\tBalance: RM " << balance << endl;
+			}
+		else 
+			{
+				do
+				{
+					cout<<"\n\t\t\t\tInsufficient payment. Please add more." << endl;
+					cout<<"\n\t\t\t\tCash paid: RM ";
+					cin >> paid;
+					balance = paid - a;
+			
+				} while (balance < 0);
+				cout<<"\n\t\t\t\tBalance: RM " << balance <<fixed<<setprecision(2)<< endl;
+			}	return 0;
+}
+
+double totalPrice(int a,int c,double b)
+{ double sum,ticketPrice;
+  switch(a){
+  
+  case 1: ticketPrice=26.50;break;
+  case 2: ticketPrice=13.35;break;
+  case 3: ticketPrice=12.74;break;
+  case 4: ticketPrice=27.40;break;
+  case 5: ticketPrice=31.20;break;
+  default: break;
+}
+  sum=ticketPrice*c+b;
+  return sum;
+}
+
+
+double checkAge(double x,int st,int ch)
+{ 
+  double CutOff;
+ 
+  if(x==1)
+  {CutOff=st*2.65+ch*13.25;}
+  else if(x==2)
+  { CutOff=st*1.335+ch*6.675;}
+  else if(x==3)
+  {CutOff=st*1.274+ch*6.37;}
+  else if(x==4)
+  { CutOff=st*2.74+ch*13.7;}
+  else if(x==5)
+  {CutOff=st*3.12+ch*15.6;}
+  
+  return CutOff;
+}
+
+int PrintableReceipt(int a, int b,int c,string d,double f)
+{ ofstream myfile;
+  myfile.open("ProjectFile.txt");
+  myfile << "\n\t\t\t\tHERE IS YOUR MOVIE RECEIPT\n";
+  myfile << "\n\t\t\t\t Please bring this ticket when entering the cinema\n";
+  myfile <<"\n\n\t\t\t\tCustomer: "<<d;
+  myfile <<"\n\n\t\t\t\tContact no:  "<<c;
+  myfile <<"\n\n\t\t\t\tTotal payment: "<<f<<fixed<<setprecision(2);
+  myfile <<"\n\n\t\t\t\tContact no:  "<<c;
+  myfile <<"\n\n\t\t\t\tStatus: PAID"; 
+  myfile <<"\n\n\t\t\t\tTotal payment: "<<f<<fixed<<setprecision(2);
+  myfile <<"\n\n\t\t\t\tStatus: PAID";
+switch (a)
+{ case 1: myfile <<"\n\n\t\t\t\tTOP GUN MAVERICK (PG13) - Hall A1"<<endl;break;
+  case 2: myfile <<"\n\n\t\t\t\tKKN DI DESA PENARI (PG18) - Hall A2"<<endl;break;
+  case 3: myfile <<"\n\n\t\t\t\tDOCTOR STRANGE (PG13) - Hall A3"<<endl;break;
+  case 4: myfile <<"\n\n\t\t\t\tSONIC THE HEDGEDOG 2 (PG13) - Hall A4"<<endl;break;
+  case 5: myfile <<"\n\n\t\t\t\tTHE ASSISTANT (PG13) - Hall A4"<<endl;break;
+  default: break;}
+ switch (b)
+{ case 1: myfile<<"\n\n\t\t\t\t0900 - 1100"<<endl;break;
+  case 2: myfile<<"\n\n\t\t\t\t1130 - 1330"<<endl;break;
+  case 3: myfile<<"\n\n\t\t\t\t1400 - 1600"<<endl;break;
+  case 4: myfile<<"\n\n\t\t\t\t1700 - 1900"<<endl;break;
+  case 5: myfile<<"\n\n\t\t\t\t2000 - 2200"<<endl;break;
+  default: break;
+}
+   myfile.close();
+   cout<<"Check the ticket text in your current folder";
+   getch();     
+          
+  return 0;
+}
+
+int RegistrationMember()
+{
+	int i;
+	
+	string v_name,email,v_contact;
+	cout<<"\n\n\t\t\t\tHo Ho Ho Congratulatulations for becoming one of our exclusive member!";
+	cout<<"\n\t\t\t\t\tYour membership id is: 4048853 ";
+	cout<<" \n\n\t\t\t\tEnter your name: ";
+	cin.ignore();
+	getline(cin,v_name);
+	cout<<"\n\t\t\t\tEnter your mobile number: ";
+	cin.ignore();
+	getline(cin,v_contact);
+	cout<<"\n\t\t\t\tEnter your email: ";
+	cin.ignore();	
+	getline(cin,email);
+	
+	//srand(time(NULL));
+	//ID=rand_max
+	//cout<<"\n\t\t\t\tYour new membership number is - :"<<rand()% 1000000;
+//	cout<<"\n\t\t\t\tYour new membership number is - :"<<404881234;
+	//cout<<"\n\n\t\t\t\t Name :"<<v_name<<"\n"<<"\n\n\t\t\t\t Mobile No. :"<<v_contact;
+//	cout<<"\n\n\t\t\t\tThank you for the registeration of membership. \n";
+	
+	return 0;
+}
+
+/* void memberID()
+{ srand(time(NULL));
+cout<<"\n\t\t\t\tYour new membership number is - :"<<rand()% 1000000;
+cout<<"\n\n\t\t\t\tThank you for the registeration of membership. \n";
+
+} */
+void PromoteRegistration()
+{ cout << "\n\n\t\t\t\t\t-------------------------------------" << endl;
+  cout << "\n\n\t\t\t\t\t\tWELCOME TO WANWAN CINEMA" << endl;
+  cout << "\n\n\t\t\t\t\t-------------------------------------" << endl;
+  cout<<"\n\t\t\tWould you like to register our membership program?"<<(char)1<<" Benefits are as follows:";
+  cout<<"\n\n\t\t\t 1. For every purchase of a movie ticket you get 25points"<<(char)1;
+  cout<<"\n\n\t\t\t 2. You are provided with regular updates regarding the movie and the showtimings."<<(char)1;
+  cout<<"\n\n\t\t\t 3. Anytime prebook tickets for the upcoming movie and preffered seats will be provided."<<(char)1;
+  cout<<"\n\n\t\t\tEnter R to register or Y to proceed ticket booking";
+}
