@@ -1,1 +1,1 @@
-# cinematicket
+# Cinema Ticketing System Using C++
