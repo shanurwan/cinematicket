@@ -1,4 +1,4 @@
-# 🎟️ Cinema Ticketing System – C++ Project Documentation
+# 🎟️ Cinema Ticketing System with C++
 ## Overview
 This program is a console-based cinema ticketing system designed to simulate the process of purchasing movie tickets, selecting seats, adding snacks, calculating total payment (including discounts), and generating a printable receipt. It emphasizes logical control flow, user input validation, data handling, and basic file I/O operations.
 
